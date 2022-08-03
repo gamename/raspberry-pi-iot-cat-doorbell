@@ -70,12 +70,12 @@ def run(args) -> None:
     # Init AWSIoTMQTTClient
     iotClient = None
     if useWebsocket:
-        # print("websocket!")
+        print("websocket!")
         iotClient = AWSIoTMQTTClient(clientId, useWebsocket=True)
         iotClient.configureEndpoint(host, port)
         iotClient.configureCredentials(rootCAPath)
     else:
-        # print("NON-websocket!")
+        print("NON-websocket!")
         iotClient = AWSIoTMQTTClient(clientId)
         iotClient.configureEndpoint(host, port)
         iotClient.configureCredentials(rootCAPath, privateKeyPath, certificatePath)
