@@ -27,12 +27,6 @@ def run(args) -> None:
     num_threads = int(args.numThreads)
     enable_edgetpu = bool(args.enableEdgeTPU)
 
-    if (overlapping_factor <= 0) or (overlapping_factor >= 1.0):
-        raise ValueError('Overlapping factor must be between 0 and 1.')
-
-    if (score_threshold < 0) or (score_threshold > 1.0):
-        raise ValueError('Score threshold must be between (inclusive) 0 and 1.')
-
     base_options = core.BaseOptions(file_name=model, use_coral=enable_edgetpu, num_threads=num_threads)
     classification_options = processor.ClassificationOptions(max_results=max_results, score_threshold=score_threshold)
     options = audio.AudioClassifierOptions(base_options=base_options, classification_options=classification_options)
@@ -128,6 +122,8 @@ def run(args) -> None:
 def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    # Tensorflow Parameters
     parser.add_argument('--model',
                         help='Name of the audio classification model.',
                         required=False,
@@ -153,66 +149,65 @@ def main():
                         action='store_true',
                         required=False,
                         default=False)
-    parser.add_argument("-e",
-                        "--endpoint",
+    # IOT Parameters
+    parser.add_argument("--endpoint",
                         action="store",
                         required=True,
                         dest="host",
                         help="Your AWS IoT custom endpoint")
-    parser.add_argument("-r",
-                        "--rootCA",
+    parser.add_argument("--rootCA",
                         action="store",
                         required=True,
                         dest="rootCAPath",
                         help="Root CA file path")
-    parser.add_argument("-c",
-                        "--cert",
+    parser.add_argument("--cert",
                         action="store",
                         dest="certificatePath",
                         help="Certificate file path")
-    parser.add_argument("-k",
-                        "--key",
+    parser.add_argument("--key",
                         action="store",
                         dest="privateKeyPath",
                         help="Private key file path")
-    parser.add_argument("-p",
-                        "--port",
+    parser.add_argument("--port",
                         action="store",
                         dest="port",
                         type=int,
                         help="Port number override")
-    parser.add_argument("-w",
-                        "--websocket",
+    parser.add_argument("--websocket",
                         action="store_true",
                         dest="useWebsocket",
                         default=False,
                         help="Use MQTT over WebSocket")
-    parser.add_argument("-id",
-                        "--clientId",
+    parser.add_argument("--clientId",
                         action="store",
                         dest="clientId",
                         default="basicPubSub",
                         help="Targeted client id")
-    parser.add_argument("-t",
-                        "--topic",
+    parser.add_argument("--topic",
                         action="store",
                         dest="topic",
                         default="tns/bot/cat-doorbell",
                         help="Targeted topic")
-    parser.add_argument("-m",
-                        "--mode",
+    parser.add_argument("--mode",
                         action="store",
                         dest="mode",
                         default="both",
                         help="Operation modes: %s" % str(AllowedActions))
-    parser.add_argument("-M",
-                        "--message",
+    parser.add_argument("--message",
                         action="store",
                         dest="message",
                         default="MSG002 Milo at the door!",
                         help="Message to publish")
 
     args = parser.parse_args()
+
+    if (args.overlappingFactor <= 0) or (args.overlappingFactor >= 1.0):
+        parser.error('Overlapping factor must be between 0 and 1.')
+        exit(2)
+
+    if (args.scoreThreshold < 0) or (args.scoreThreshold > 1.0):
+        parser.error('Score threshold must be between (inclusive) 0 and 1.')
+        exit(2)
 
     if args.mode not in AllowedActions:
         parser.error("Unknown --mode option %s. Must be one of %s" % (args.mode, str(AllowedActions)))
