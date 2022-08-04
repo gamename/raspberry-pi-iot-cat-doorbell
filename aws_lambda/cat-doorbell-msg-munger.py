@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     assert context
 
     # Debug
-    # print(event)
+    print(event)
     print(context.aws_request_id)
 
     arn = os.environ['CAT_DOORBELL_SNS_TOPIC_ARN']
