@@ -26,10 +26,10 @@ parser.add_argument("-w", "--websocket", action="store_true", dest="useWebsocket
                     help="Use MQTT over WebSocket")
 parser.add_argument("-id", "--clientId", action="store", dest="clientId", default="basicPubSub",
                     help="Targeted client id")
-parser.add_argument("-t", "--topic", action="store", dest="topic", default="tns/bot/garage", help="Targeted topic")
+parser.add_argument("-t", "--topic", action="store", dest="topic", default="tns/bot/cat-doorbell", help="Targeted topic")
 parser.add_argument("-m", "--mode", action="store", dest="mode", default="both",
                     help="Operation modes: %s" % str(AllowedActions))
-parser.add_argument("-M", "--message", action="store", dest="message", default="MSG001 TEST!",
+parser.add_argument("-M", "--message", action="store", dest="message", default="MSG002 TEST!",
                     help="Message to publish")
 
 args = parser.parse_args()
