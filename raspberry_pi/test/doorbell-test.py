@@ -1,7 +1,8 @@
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
-import logging
 import argparse
 import json
+import logging
+
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
 AllowedActions = ['both', 'publish', 'subscribe']
 
