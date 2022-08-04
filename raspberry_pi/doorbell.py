@@ -19,6 +19,12 @@ def customCallback(client, userdata, message):
 
 
 def run(args) -> None:
+    """
+    The main runner function which sets up both Tensorflow and IoT/MQTT clients. The `while` loop runs forever
+    waiting for a cat sound (a meow) to trigger the IoT scripts on AWS and thereby drive the SMS notifications.
+
+    :param args: The various arguments passed to the function from the command line
+    """
     # Tensorflow setup
     model = str(args.model)
     max_results = int(args.maxResults)
