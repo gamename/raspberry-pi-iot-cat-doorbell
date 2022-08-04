@@ -1,0 +1,2 @@
+AWSIoTPythonSDK==1.5.2
+tflite_support==0.4.1
