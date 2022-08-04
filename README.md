@@ -7,6 +7,6 @@ If the door is closed, and the cat goes 'meow' while outside, then I get an SMS 
 Directions
 This assumes you have a raspberry pi that has the OS installed and it is wifi-attached to the network 
 
-AWS IoT Setup 
+AWS IoT Setup
 
-
+![](.README_images/diagram.png)
