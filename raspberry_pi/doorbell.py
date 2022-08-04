@@ -128,7 +128,7 @@ def run(args) -> None:
         classification = result.classifications[0]
         label_list = [category.class_name for category in classification.classes]
         noise = label_list[0]
-        print(noise)
+        # print(noise)
         if noise == 'Cat':
             iotClient.publish(topic, messageJson, 1)
             if args.mode == 'publish':
