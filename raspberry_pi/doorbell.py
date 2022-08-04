@@ -87,8 +87,25 @@ def run(args) -> None:
     iotClient.configureConnectDisconnectTimeout(10)  # 10 sec
     iotClient.configureMQTTOperationTimeout(5)  # 5 sec
 
-    # Connect and subscribe to AWS IoT
-    iotClient.connect()
+    retry_flag = True
+    retry_count = 0
+
+    while retry_flag and retry_count < 5:
+        try:
+            # Connect and subscribe to AWS IoT
+            iotClient.connect()
+            print("Connection successful!")
+            retry_flag = False
+        except Exception as e:
+            print(e)
+            print("Connection unsuccessful! Retry after 5 sec")
+            retry_count = retry_count + 1
+            time.sleep(5)
+
+    if retry_count == 5:
+        print("Connection retries exceeded!")
+        raise Exception("Could not connect to host!")
+
     if args.mode == 'both' or args.mode == 'subscribe':
         iotClient.subscribe(topic, 1, customCallback)
     time.sleep(2)
