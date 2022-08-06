@@ -118,3 +118,7 @@ A. ???
 Q. Could this be used for a dog?<br>
 A. Yes. Change the FIXME FIXME
 <br><br>
+Q. Why didn't you do this using Terraform?<br>
+A. Terraform is an excellent tool, but not everyone knows how to use it.  So, I opted for a manual approach to be 
+accessible to a wider audience.
+<br><br>
