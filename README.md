@@ -2,18 +2,16 @@
 
 <br><br>
 This is a setup to alert me when our cat is meowing at the door and wants to be let in. If the door is closed, and the
-cat goes 'meow' while outside, then I get an SMS message on my cell.
+cat goes 'meow' while outside, then I get text message on my cell phone.
 <br><br>
 
 # Technical Description
 
-This is an IoT application. AWS MQTT software is loaded on a single Raspberry Pi that has an attached microphone. WHen
-the correct
-sound (in this case a cat meowing) is detected, the Raspberry Pi forwards a message to AWS. AWS IoT intercepts the
-message and
-sends the message to a Lambda function for formatting. The Lambda function then forwards the message to an SNS topic
-which then sends
-it as an SMS message to my cell phone.
+This is an IoT (Internet of Things) application. A single Raspberry Pi is defined as a "thing" on AWS in the IoT Core
+service. AWS software is loaded the Raspberry Pi that has an attached microphone. WHen the correct sound (in this case
+a cat meowing) is detected, the Raspberry Pi forwards a message to AWS. AWS IoT intercepts the message and sends the
+message to a Lambda function for formatting. The Lambda function then forwards the message to an SNS topic which then
+sends it as an SMS message to my cell phone.
 <br><br>
 
 # High Level Design<br>
@@ -23,62 +21,69 @@ it as an SMS message to my cell phone.
 
 # Prerequisites<br>
 
-1. An AWS account
-2. A raspberry pi 4 (see hardware parts listed below)
-3. Raspberry Pi imaging software
+1. An AWS (Amazon Web
+   Services) [account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
+2. [A Raspberry Pi 4](https://www.amazon.com/dp/B08Q8L3B9D?ref_=cm_sw_r_cp_ud_dp_70VG7MF3JGCHTGZKZGG4) (see hardware
+   parts listed below)
+3. [Raspberry Pi imaging software](https://www.raspberrypi.com/software/)
    <br><br>
 
-# Software Requirements
+# STEP 1: Raspberry Pi (RPi) Initial Configuration
 
-## Raspberry Pi Configuration
+1. Load the operating system. See the procedure [here](https://youtu.be/u8bbp79haN4)<br>
+   NOTE: Install the new *64-bit* version of the operating system.<br>
 
-Before you can use your raspberry pi, there are several things you need to configure on it.
+2. SSH to your Raspberry Pi once you have it configured
 
-### Loading the OS
+3. Clone a copy of this repository
 
-First, we have to load the OS on a micro SD card. Then, we take the card and install it on your raspberry pi.
+```bash
+    git clone https://github.com/gamename/raspberry-pi-iot-cat-doorbell.git
+```
 
-#### Imaging the disk
+4. Using Python, install the required packages
 
-#### Booting the OS
+```bash
+    cd ~/raspberry-pi-iot-cat-doorbell/raspberry_pi
+    pip install -r requirements.txt
+```
 
-#### SSH into the environment
+5. Install the AWS CLI (Command Line Interface)
 
-### AWS Credentials Configuration
+```bash
+    pip install awscli
+```
 
-### Generating keys
+6. Using your AWS account, create and install the access and secret keys as
+   described [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
 
-### Adding keys to your RPi environment
+```bash
+    aws configure
+```
 
-<br><br>
+7. Verify you have everything configured by issuing this command (below). If you do not get any errors, you are
+   configured correctly.
 
-# Directions<br>
-
-## Software Setup
-
-### Raspberry Pi Configuration
-
-#### Tensorflow Lite
-
-#### MQTT (Message Queue Telemetry Transport)
-
-<br><br>
-
-### AWS Configuration
-
-#### IOT (Internet of Things)
-
-#### SMS (Simple Messaging Service)
-
-#### SNS (Simple Notification Service)
-
-#### Lambda Function
+```bash
+    aws s3 ls
+```
 
 <br><br>
 
-### Test
+# STEP 2: AWS Configuration
 
-<br><br>
+1. Create the "thing" on AWS
+2. Download the thing configuration zip file
+3. Update the security policy
+4. Create message routing rule
+5. Configure Rule SQL statement
+6. Point rule to Lambda function
+7. Create Lambda function
+8. Create the SNS topic
+9. Create the SMS subscription (i.e. define the telephone number)
+10. Subscribe to the SNS topic with the SMS subscription
+11. Update IAM role policy with correct permissions
+    <br><br>
 
 # Hardware Parts List <br>
 
@@ -102,16 +107,14 @@ First, we have to load the OS on a micro SD card. Then, we take the card and ins
 
 <br><br>
 
-# AWS Steps
+# FAQ
 
-1. Create the "thing" on AWS
-2. Download the thing configuration zip file
-3. Update the security policy
-4. Create message routing rule
-5. Configure Rule SQL statement
-6. Point rule to Lambda function
-7. Create Lambda function
-8. Create the SNS topic
-9. Create the SMS subscription (i.e. define the telephone number)
-10. Subscribe to the SNS topic with the SMS subscription
-11. Update IAM role policy with correct permissions
+Q. How much will this cost?<br>
+A. ????
+<br><br>
+Q. How long does this take to set up?<br>
+A. ???
+<br><br>
+Q. Could this be used for a dog?<br>
+A. Yes. Change the FIXME FIXME
+<br><br>
