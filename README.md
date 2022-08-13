@@ -75,8 +75,8 @@ topic which then sends it as an SMS text message to my cell phone.
 # STEP 2: AWS Configuration
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
-   AWS
-2. Select "Python" as the IoT SDK type
+   AWS by following the directions.
+2. When offered, select "Python" as the IoT SDK type 
 3. Download the thing configuration zip file to the Raspberry Pi. Probably the easiest way to do this is:<br>
    a. Download the zip file to your laptop. Do NOT unzip it<br>
    b. [ssh](https://phoenixnap.com/kb/what-is-ssh) into the RPi from your laptop<br>
