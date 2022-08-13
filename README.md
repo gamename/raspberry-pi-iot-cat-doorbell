@@ -129,13 +129,23 @@ topic which then sends it as an SMS text message to my cell phone.
 ![](.README_images/select-lambda-from-list.png)<br>
 25. Click on the "Next" button and click "Create" on the next page:<br> 
 ![](.README_images/create-message-handler.png)<br>
-
-10. Point rule to Lambda function
-11. Create Lambda function
-12. Create the SNS topic
-13. Create the SMS subscription (i.e. define the telephone number)
-14. Subscribe to the SNS topic with the SMS subscription
-15. Update IAM role policy with correct permissions
+26. Now, we need to create the Simple Notification Service (SNS) topic. This is used to pass messages to SMS for text messages.<br>
+27. Go to [SNS Topics](https://us-east-1.console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics). 
+28. Create a new "standard" topic called "kat-doorbell":<br>
+![](.README_images/kat-doorbell-sns-topic-create.png)<br>
+29. Now, copy the ARN of the topic:<br>
+![](.README_images/copy-arn-of-topic.png)<br>
+30. Go back to the lambda function "kat-doorbell".
+31. Click on "Configuration", then "Environment Variables":<br>
+![](.README_images/lambda-env-vars.png)<br>
+32. Edit the environment variables. Create a new one called "CAT_DOORBELL_SNS_TOPIC_ARN".<br>
+![](.README_images/new-env-var-for-lambda.png)<br> 
+33. Click on "Save"
+34. Go to SNS and add a phone number:<br>
+![](.README_images/sns-add-phone-number.png)<br>
+![](.README_images/add-phone-number.png)<br>
+35. In SNS, create a new subscription:<br>
+![](.README_images/sns-subscription-to-sms.png)<br>
 <br><br>
 
 # STEP 3: Assembly
