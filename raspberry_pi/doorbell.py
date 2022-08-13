@@ -138,7 +138,7 @@ def run(args) -> None:
         if noise == 'Cat':
             print("Cat detected!")
             iotClient.publish(topic, messageJson, 1)
-            time.sleep(600)
+            time.sleep(120)
 
 
 def main():
