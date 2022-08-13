@@ -7,11 +7,13 @@ cat goes 'meow' while outside, then I get text message on my cell phone.
 
 # Technical Description
 
-This is an IoT (Internet of Things) application. A single Raspberry Pi is defined as a "thing" on AWS in the IoT Core
-service. AWS software is loaded the Raspberry Pi that has an attached microphone. WHen the correct sound (in this case
-a cat meowing) is detected, the Raspberry Pi forwards a message to AWS. AWS IoT intercepts the message and sends the
-message to a Lambda function for formatting. The Lambda function then forwards the message to an SNS topic which then
-sends it as an SMS message to my cell phone.
+This is an Amazon Web Services (AWS) Internet of Things (IoT) application. A single Raspberry Pi is defined as a "thing" 
+on AWS in the IoT Core service. AWS software is loaded on the Raspberry Pi which has an attached microphone. Onboard the 
+Raspberry Pi is a small Machine Learning (ML) application called Tensorflow Lite. Along with Tensorflow, there is a 
+small database of sounds it is able to identify. WHen the correct sound (in this case a cat meowing) is detected, 
+the Tensorflow recognizes it and forwards a message to AWS. AWS IoT intercepts the message and sends the message to 
+an AWS Lambda function for formatting. The Lambda function then forwards the message to an SNS (Simple Notification Service) 
+topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
 # High Level Design<br>
@@ -88,22 +90,21 @@ sends it as an SMS message to my cell phone.
 # Hardware Parts List <br>
 
 1. Raspberry Pi 4
-2. micro SD Card
+2. Micro SD Card
 3. RPi Chassis
 4. Microphone
-5. USB cable
+5. RJ45 ethernet cable (to extend the USB connection)
 6. Raspberry Pi 4 power supply
 7. Hobby box (to house the microphone)
 8. silicone caulking
 9. Drill
 10. 1/4" drill bit
-11. Female USB adapter
-12. Male USB adapter
-13. 2 wood screws
-14. cable wire clips
-15. double-sided tape
-16. wire cutters
-17. micro SD card reader
+11. RJ45-to-USB adapters 
+12. 2 wood screws
+13. cable wire clips
+14. double-sided tape
+15. micro SD card reader
+16. RJ45 crimping tool
 
 <br><br>
 
@@ -113,7 +114,7 @@ Q. How much will this cost?<br>
 A. ????
 <br><br>
 Q. How long does this take to set up?<br>
-A. ???
+A. Once you have all the parts, you could probably do it in an afternoon
 <br><br>
 Q. Could this be used for a dog?<br>
 A. Yes. Change the FIXME FIXME
