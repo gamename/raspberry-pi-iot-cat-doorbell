@@ -97,7 +97,7 @@ topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
 # STEP 3: Assembly
-1. 
+1. WIP - TBD 
 <br><br>
 
 # Hardware Parts List <br>
