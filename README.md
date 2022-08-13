@@ -180,14 +180,11 @@ topic which then sends it as an SMS text message to my cell phone.
 
 # FAQ
 
-Q. How much will this cost?<br>
-A. ????
-<br><br>
 Q. How long does this take to set up?<br>
 A. Once you have all the parts, you could probably do it in an afternoon
 <br><br>
 Q. Could this be used for a dog?<br>
-A. Yes. Change the FIXME FIXME
+A. Yes. Change line 138 in `doorbell.py` to "Dog" 
 <br><br>
 Q. Why didn't you do this using Terraform?<br>
 A. Terraform is an excellent tool, but not everyone knows how to use it.  So, I opted for a manual approach to be 
