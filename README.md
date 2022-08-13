@@ -75,23 +75,67 @@ topic which then sends it as an SMS text message to my cell phone.
 # STEP 2: AWS Configuration
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
-   AWS by following the directions.
-2. When offered, select "Python" as the IoT SDK type 
+   AWS by following the directions.<br>
+2. When offered, select "Python" as the IoT SDK type<br>
+   ![](.README_images/choose-python.png)
 3. Download the thing configuration zip file to the Raspberry Pi. Probably the easiest way to do this is:<br>
    a. Download the zip file to your laptop. Do NOT unzip it<br>
-   b. [ssh](https://phoenixnap.com/kb/what-is-ssh) into the RPi from your laptop<br>
-   c. [sftp](https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server) from the Raspberry Pi to the laptop<br> 
-   d. Download the thing configuration zip file to the Raspberry Pi from the laptop<br>
-4. Unzip the file on the Raspberry Pi
-5. Update the security policy
-6. Create message routing rule
-7. Configure Rule SQL statement
-8. Point rule to Lambda function
-9. Create Lambda function
-10. Create the SNS topic
-11. Create the SMS subscription (i.e. define the telephone number)
-12. Subscribe to the SNS topic with the SMS subscription
-13. Update IAM role policy with correct permissions
+   ![](.README_images/download-zip-file.png)<br>
+   b. [sftp](https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server) from your laptop to the RPi<br> 
+   c. 'put' the thing configuration zip file to the Raspberry Pi from the laptop<br>
+   ![](.README_images/sftp-and-put.png)<br>
+4. Unzip the file on the Raspberry Pi.  It should look something like this:<br>
+   ![](.README_images/ls-on-rpi-after-unzip.png)<br>
+5. Continue following the directions and run the `start.sh` script.<br> 
+6. You should see test messages on AWS being sent from the `start.sh` script:<br> 
+   ![](.README_images/test-messages-from-rpi.png)<br> 
+7. Update the security policy by going here:<br>
+   ![](.README_images/update-security-policy.png)<br>
+8. Then edit your policy by selecting it on the left and hitting the "Edit" button:<br>
+   ![](.README_images/edit-security-policy.png)<br>
+9. Click on the "JSON" button on the right, and you should see something like this:<br>
+   ![](.README_images/json-policy-top.png)<br> 
+10. In the first "Resource" definition, you should add the following:<br>
+    ```bash
+    "arn:aws:iot:us-east-1:<your-aws-id>:topic/<your-initials>/bot/kat-doorbell"
+    ```
+11. In the second "Resource" definition, you should add this:<br>
+    ```bash
+     "arn:aws:iot:us-east-1:<your-aws-id>:topicfilter/<your-initials>/bot/kat-doorbell"
+    ```
+12. In the third "Resource" definition, you should add the following:<br>
+    ```bash
+        "arn:aws:iot:us-east-1:<your-aws-id>:client/doorbell",
+        "arn:aws:iot:us-east-1:<your-aws-id>:client/doorbell-test"
+    ```
+13. The finished product should be:<br>
+![](.README_images/finished-policy-example.png)<br>
+14. Save the finished product as the new version<br>
+    ![](.README_images/save-policy-as-new-version.png)<br>
+15. Now, click on the message routing rules<br>
+    ![](.README_images/msg-routing-rule-menu.png)<br>
+16. Click on "Create Rule", then name your rule "kat_doorbell" and hit "Next"<br>
+17. Set the SQL statement to the following:<br>
+    ` select message from '<your-initials>/bot/kat-doorbell' Where startswith(message, 'MSG002')`
+18. Hit the "Next" button and choose "Lambda" from the fold-down list of actions<br>  
+19. Click on "Create Lambda Function"<br>
+20. Name the function "kat-doorbell" and select Python as the runtime:<br>
+    ![](.README_images/lambda-build-name-and-language.png)
+21. Click on "Create Function" 
+22. In the code IDE provided, paste the contents of the file `cat-doorbell-msg-munger.py`:<br>
+    ![](.README_images/paste-into-lambda-fun.png)
+23. Click the "Deploy" button.
+24. Now go back to the message routing tab.  Click on the update circle button and then select the new lambda function from the list:<br>
+![](.README_images/select-lambda-from-list.png)<br>
+25. Click on the "Next" button and click "Create" on the next page:<br> 
+![](.README_images/create-message-handler.png)<br>
+
+10. Point rule to Lambda function
+11. Create Lambda function
+12. Create the SNS topic
+13. Create the SMS subscription (i.e. define the telephone number)
+14. Subscribe to the SNS topic with the SMS subscription
+15. Update IAM role policy with correct permissions
 <br><br>
 
 # STEP 3: Assembly
@@ -120,6 +164,8 @@ topic which then sends it as an SMS text message to my cell phone.
 
 <br><br>
 # NOTES
+1. Use the rj45/ethernet cable to extend the USB connection to the microphone. The USB-to-RJ45 adapters enable you to go up to about 150 feet from the RPi to the microphone.
+2. Since the rj45 needs to connect to the microphone *inside* the hobby box, I had to cut off the RJ45 adapter, run the cable into the box, then reattach a new RJ45 adapter. YMMV
 <br><br>
 
 # FAQ
