@@ -74,8 +74,11 @@ topic which then sends it as an SMS text message to my cell phone.
 
 # STEP 2: AWS Configuration
 
-1. Create the "thing" on AWS
-2. Download the thing configuration zip file
+1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
+   AWS
+2. Select "Python" as the IoT SDK type
+2. Download the thing configuration zip file to the Raspberry Pi
+3. Unzip the file on the Raspberry Pi
 3. Update the security policy
 4. Create message routing rule
 5. Configure Rule SQL statement
