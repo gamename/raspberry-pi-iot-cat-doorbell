@@ -63,7 +63,6 @@ topic which then sends it as an SMS text message to my cell phone.
     aws configure
 ```
 
-.
 7. Verify you have everything configured by issuing this command (below). If you do not get any errors, you are
    configured correctly.
 
@@ -77,7 +76,6 @@ topic which then sends it as an SMS text message to my cell phone.
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
    AWS
-   . 
 2. Select "Python" as the IoT SDK type
 3. Download the thing configuration zip file to the Raspberry Pi. Probably the easiest way to do this is:<br>
    a. Download the zip file to your laptop. Do NOT unzip it<br>
@@ -108,17 +106,20 @@ topic which then sends it as an SMS text message to my cell phone.
 4. [Microphone](https://a.co/d/79ZNPXm)
 5. [RJ45 ethernet cable](https://a.co/d/4nUaynw) (to extend the USB connection)
 6. [Raspberry Pi 4 power supply](https://a.co/d/7sYmfgP)
-7. [Hobby box](https://a.co/d/1OaFHOC) (to house the microphone)
-8. [silicone caulking](https://a.co/d/iZSnaku)
+7. [Hobby box](https://a.co/d/1OaFHOC) (to house the microphone outside)
+8. [silicone caulk](https://a.co/d/iZSnaku)
 9. Drill
 10. 1/4" drill bit
 11. [RJ45-to-USB adapters](https://a.co/d/iqZkoYu) 
-12. 2 wood screws
+12. 2 wood screws (to secure the microphone-in-a-box to the door frame)  
 13. [cable wire clips](https://a.co/d/1oKEFx6)
 14. [double-sided tape](https://a.co/d/fFFFt39)
 15. micro SD card reader (maybe not needed if your laptop already has a reader)
 16. [RJ45 crimping tool](https://a.co/d/4zkLy3x)
+17. [Cord hiders](https://a.co/d/2iqsGGe)
 
+<br><br>
+# NOTES
 <br><br>
 
 # FAQ
