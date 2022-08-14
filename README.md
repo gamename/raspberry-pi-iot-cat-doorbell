@@ -56,14 +56,19 @@ topic which then sends it as an SMS text message to my cell phone.
     pip install awscli
 ```
 
-6. Using your AWS account, create and install the access and secret keys as
+6. Add this to the bottom of your shell startup file (.bashrc or .zshrc):
+```bash
+    export PATH=${HOME}/.local/bin:${PATH}
+```
+
+7. Using your AWS account, create and install the access and secret keys as
    described [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
 
 ```bash
     aws configure
 ```
 
-7. Verify you have everything configured by issuing this command (below). If you do not get any errors, you are
+8. Verify you have everything configured by issuing this command (below). If you do not get any errors, you are
    configured correctly.
 
 ```bash
