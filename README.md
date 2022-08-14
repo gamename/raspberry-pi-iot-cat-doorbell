@@ -78,7 +78,7 @@ topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
 # STEP 2: AWS Configuration
-### NOTE: This cookbook assumes AWS region `us-east-1`
+### NOTES:<br>- This cookbook assumes AWS region `us-east-1`<br>- Somtimes 'cat' is spelled 'kat' below. Ignore it. Always assume 'cat'. I had to do that to keep from conflicting with existing definitions.
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
    AWS by following the directions.<br>
@@ -191,7 +191,7 @@ topic which then sends it as an SMS text message to my cell phone.
 3. ssh to your Raspberry Pi and edit the `raspberry-pi-iot-cat-doorbell/raspberry_pi/test/drive-doorbell-test.sh` file:<br>
 4. Paste the endpoint value in the `--endpoint` field and update the `--topic` field accordingly.<br>
 5. Run the `drive-doorbell-test.sh` command. You should see the results on your cell phone. :)
-6. If you DO NOT see a message on your cell phone, look at the [CloudWatch logs](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups).
+6. If you DO NOT see a message on your cell phone, look at the [CloudWatch logs](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups) for clues about what went wrong.<br>
 
 <br><br>
 
@@ -228,7 +228,7 @@ exit 0
 3. To be continued...
 <br><br>
 
-# Hardware Parts List <br>
+# Parts List <br>
 
 1. [Raspberry Pi 4](https://a.co/d/iTeahRb)
 2. [Micro SD Card](https://a.co/d/gPUG9wK)
@@ -249,7 +249,7 @@ exit 0
 17. [Cord hiders](https://a.co/d/2iqsGGe)
 
 <br><br>
-# NOTES
+# Hardware Notes
 1. Use the rj45/ethernet cable to extend the USB connection to the microphone. The USB-to-RJ45 adapters enable you to go up to about 150 feet from the RPi to the microphone.
 2. Since the rj45 needs to connect to the microphone *inside* the hobby box, I had to cut off the RJ45 adapter, run the cable into the box, then reattach a new RJ45 adapter. YMMV
 <br><br>
