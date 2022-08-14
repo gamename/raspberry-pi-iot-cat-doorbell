@@ -78,6 +78,7 @@ topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
 # STEP 2: AWS Configuration
+### NOTE: This cookbook assumes AWS region `us-east-1`
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
    AWS by following the directions.<br>
@@ -151,38 +152,80 @@ topic which then sends it as an SMS text message to my cell phone.
 ![](.README_images/add-phone-number.png)<br>
 35. In SNS, create a new subscription:<br>
 ![](.README_images/sns-subscription-to-sms.png)<br>
-36. Next, we need to set permissions for us to send SNS messages.  
-37. Go to the [Identity and Access Management](https://us-east-1.console.aws.amazon.com/iamv2/home#/home) (IAM) page in AWS. 
-38. Click on "Roles" on the left.
+36. Next, we need to set permissions for us to send SNS messages. <br> 
+37. Go to the [Identity and Access Management](https://us-east-1.console.aws.amazon.com/iamv2/home#/home) (IAM) page in AWS.<br>
+38. Click on "Roles" on the left.<br>
 ![](.README_images/iam-roles-menu-item.png)<br>
-39. In she search field, type in "kat-doorbell". You should get something like this:<br>
+39. In the search field, type in "kat-doorbell". You should get something like this:<br>
 ![](.README_images/iam-search-for-kat-doorbell.png)<br>
 40. Click on the entry, and then click on the long policy name:<br>
 ![](.README_images/iam-long-policy-name.png)<br>
 41. Then, click on "Edit Policy":<br>
 ![](.README_images/iam-edit-policy.png)<br>
 42. Replace the entire contents with this:<br>
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "SNS:Publish"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-```
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                    "SNS:Publish"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+    ```
+43. Click on "Review" and then save the policy contents.<br>
+
 <br><br>
 
-# STEP 3: Assembly
-1. WIP - TBD 
+# STEP 3: Test IoT Functionality
+1. Go to your [IoT settings](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/settings) on AWS. 
+2. Copy the "Endpoint" value:<br>
+![](.README_images/iot-endpoint-value.png)<br>
+3. ssh to your Raspberry Pi and edit the `raspberry-pi-iot-cat-doorbell/raspberry_pi/test/drive-doorbell-test.sh` file:<br>
+4. Paste the endpoint value in the `--endpoint` field and update the `--topic` field accordingly.<br>
+5. Run the `drive-doorbell-test.sh` command. You should see the results on your cell phone. :)
+6. If you DO NOT see a message on your cell phone, look at the [CloudWatch logs](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups).
+
+<br><br>
+
+# STEP 4: Assembly
+1. Update the `raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbell.sh` file like you did in STEP 3 (above).<br>
+2. Now we will make sure the doorbell is active at boot time.  To do that, update the Raspberry Pi file `/etc/rc.local` with this change:<br> 
+```bash
+sudo su -c "/home/your-id/raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbell.sh" -s /bin/sh your-id 
+```
+Example:
+```bash
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+sudo su -c "/home/tennis/raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbell.sh" -s /bin/sh tennis
+
+exit 0
+```
+3. To be continued...
 <br><br>
 
 # Hardware Parts List <br>
