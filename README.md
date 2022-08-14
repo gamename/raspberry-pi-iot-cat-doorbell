@@ -151,6 +151,34 @@ topic which then sends it as an SMS text message to my cell phone.
 ![](.README_images/add-phone-number.png)<br>
 35. In SNS, create a new subscription:<br>
 ![](.README_images/sns-subscription-to-sms.png)<br>
+36. Next, we need to set permissions for us to send SNS messages.  
+37. Go to the [Identity and Access Management](https://us-east-1.console.aws.amazon.com/iamv2/home#/home) (IAM) page in AWS. 
+38. Click on "Roles" on the left.
+![](.README_images/iam-roles-menu-item.png)<br>
+39. In she search field, type in "kat-doorbell". You should get something like this:<br>
+![](.README_images/iam-search-for-kat-doorbell.png)<br>
+40. Click on the entry, and then click on the long policy name:<br>
+![](.README_images/iam-long-policy-name.png)<br>
+41. Then, click on "Edit Policy":<br>
+![](.README_images/iam-edit-policy.png)<br>
+42. Replace the entire contents with this:<br>
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "SNS:Publish"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
 <br><br>
 
 # STEP 3: Assembly
