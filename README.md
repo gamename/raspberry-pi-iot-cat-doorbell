@@ -21,6 +21,22 @@ topic which then sends it as an SMS text message to my cell phone.
 ![](.README_images/diagram.png)
 <br><br>
 
+# Pictures
+
+![](.README_images/main_rpi_unit.png)<br>
+Here is the RPi attaching the USB connection to a USB-to-RJ45 connection. THe cable it attaches to is a standard cat5e cable.
+
+![](.README_images/outside_box.png)<br>
+This is the "doorbell" portion.  It is situated outside next to the location where a cat is expected to be meowing for entry.
+
+![](.README_images/outside_box_lidless.png)<br>
+This is what is inside the box.  Note the small microphone at the end of the USB-to-RJ45 connector.
+
+![](.README_images/outside_box_underneath.png)<br>
+These are holes drilled into the box to allow sound to be heard by the microphone.
+
+
+<br><br>
 # Prerequisites<br>
 
 1. An AWS (Amazon Web
@@ -29,6 +45,8 @@ topic which then sends it as an SMS text message to my cell phone.
    parts listed below)
 3. [Raspberry Pi imaging software](https://www.raspberrypi.com/software/)
    <br><br>
+
+# Construction
 
 # STEP 1: Raspberry Pi (RPi) Initial Configuration
 
@@ -251,7 +269,7 @@ exit 0
 <br><br>
 # Hardware Notes
 1. Use the rj45/ethernet cable to extend the USB connection to the microphone. The USB-to-RJ45 adapters enable you to go up to about 150 feet from the RPi to the microphone.
-2. Since the rj45 needs to connect to the microphone *inside* the hobby box, I had to cut off the RJ45 adapter, run the cable into the box, then reattach a new RJ45 adapter. YMMV
+2. Since the rj45 needs to connect to the microphone *inside* the hobby box, I had to cut off the RJ45 adapter, run the cable into the box via a hole, then reattach a new RJ45 adapter. YMMV
 <br><br>
 
 # FAQ
