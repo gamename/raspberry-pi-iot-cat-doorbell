@@ -35,6 +35,8 @@ This is what is inside the box.  Note the small microphone at the end of the USB
 ![](.README_images/outside_box_underneath.png)<br>
 These are holes drilled into the box to allow sound to be heard by the microphone.
 
+![](.README_images/milo_at_the_door.png)
+The doorbell in use
 
 <br><br>
 # Prerequisites<br>
