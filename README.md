@@ -149,8 +149,8 @@ The doorbell in use
     ![](.README_images/lambda-build-name-and-language.png)
 21. Click on "Create Function" 
 22. In the code IDE provided, paste the contents of the file `cat-doorbell-msg-munger.py`:<br>
-    ![](.README_images/paste-into-lambda-fun.png)
-23. Click the "Deploy" button.
+    ![](.README_images/paste-into-lambda-fun.png)<br>
+23. Click the "Deploy" button.<br>
 24. Now go back to the message routing tab.  Click on the update circle button and then select the new lambda function from the list:<br>
 ![](.README_images/select-lambda-from-list.png)<br>
 25. Click on the "Next" button and click "Create" on the next page:<br> 
@@ -166,23 +166,27 @@ The doorbell in use
 ![](.README_images/lambda-env-vars.png)<br>
 32. Edit the environment variables. Create a new one called "CAT_DOORBELL_SNS_TOPIC_ARN".<br>
 ![](.README_images/new-env-var-for-lambda.png)<br> 
-33. Click on "Save"
-34. Go to SNS and add a phone number:<br>
+33. Click on "Save"<br>
+34. Next, we need to [create a new phone number](https://us-east-1.console.aws.amazon.com/pinpoint/home?region=us-east-1#/sms-account-settings/phoneNumbers) so that we can send SMS messages. <br>
+![](.README_images/request-phone-number.png)<br>
+35. On the provided screen, select the options shown below<br>
+![](.README_images/phone-number-options.png)<br>
+36. Go to SNS and add your new phone number:<br>
 ![](.README_images/sns-add-phone-number.png)<br>
 ![](.README_images/add-phone-number.png)<br>
-35. In SNS, create a new subscription:<br>
+37. In SNS, create a new subscription:<br>
 ![](.README_images/sns-subscription-to-sms.png)<br>
-36. Next, we need to set permissions for us to send SNS messages. <br> 
-37. Go to the [Identity and Access Management](https://us-east-1.console.aws.amazon.com/iamv2/home#/home) (IAM) page in AWS.<br>
-38. Click on "Roles" on the left.<br>
+38. Next, we need to set permissions for us to send SNS messages. <br> 
+39. Go to the [Identity and Access Management](https://us-east-1.console.aws.amazon.com/iamv2/home#/home) (IAM) page in AWS.<br>
+40. Click on "Roles" on the left.<br>
 ![](.README_images/iam-roles-menu-item.png)<br>
-39. In the search field, type in "kat-doorbell". You should get something like this:<br>
+41. In the search field, type in "kat-doorbell". You should get something like this:<br>
 ![](.README_images/iam-search-for-kat-doorbell.png)<br>
-40. Click on the entry, and then click on the long policy name:<br>
+42. Click on the entry, and then click on the long policy name:<br>
 ![](.README_images/iam-long-policy-name.png)<br>
-41. Then, click on "Edit Policy":<br>
+43. Then, click on "Edit Policy":<br>
 ![](.README_images/iam-edit-policy.png)<br>
-42. Replace the entire contents with this:<br>
+44. Replace the entire contents with this:<br>
     ```json
     {
         "Version": "2012-10-17",
@@ -200,7 +204,7 @@ The doorbell in use
         ]
     }
     ```
-43. Click on "Review" and then save the policy contents.<br>
+45. Click on "Review" and then save the policy contents.<br>
 
 <br><br>
 
@@ -245,7 +249,11 @@ sudo su -c "/home/tennis/raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbe
 
 exit 0
 ```
-3. To be continued...
+3. Attach the USB-to-RJ45 adapter to one of the USB2.0 ports.
+4. Connect the RJ45 cable to the adapter and run it to your termination spot (i.e. where your cat will be yelling to be let in).
+5. Attach the RJ45-to-USB adapter to the other end of the RJ45 cable.
+6. Then attach the microphone to the USB connector.
+7. Test the whole thing by playing [this video](https://youtu.be/uLB1ZeRgl_k) while holding your phone near the microphone.
 <br><br>
 
 # Parts List <br>
@@ -275,14 +283,34 @@ exit 0
 <br><br>
 
 # FAQ
-
 Q. How long does this take to set up?<br>
-A. Once you have all the parts, you could probably do it in an afternoon
+A. Once you have all the parts - including the new phone number - you could probably do it in an afternoon<br>
 <br><br>
 Q. Could this be used for a dog?<br>
-A. Yes. Change line 138 in `doorbell.py` to "Dog" 
+A. Yes. Change "Cat" on line 138 in `doorbell.py` to "Dog" <br>
 <br><br>
 Q. Why didn't you do this using Terraform?<br>
 A. Terraform is an excellent tool, but not everyone knows how to use it.  So, I opted for a manual approach to be 
-accessible to a wider audience.
+accessible to a wider audience.<br>
+<br><br>
+Q. Why did I use AWS for SMS instead of IFTTT or some other service?<br>
+A. I'm exploring AWS for lots of different services, so I wanted to try it this way instead.<br>
+<br><br>
+Q. Why not just make your cat an indoor cat and avoid this whole problem?<br>
+A. Technically, he is and indoor cat. His name is "Milo", by the way. The outside area we let Milo roam is a gated back patio which lets him _think_ he is really outside.<br>
+<br><br>
+Q. What's the monthly cost of this configuration?<br>
+A. About $11.00 (including the toll-free number from Amazon)<br>
+<br><br>
+Q. Do I really need a Raspberry Pi 4 for this?<br>
+A. Unfortunately, yes. Tensorflow requires it.<br>
+<br><br>
+Q. Can the Amazon toll-free number be used for other IoT applications?<br>
+A. Yes, I have [another project](https://github.com/gamename/raspberry-pi-iot-garage-sensor) which does just that.<br>
+<br><br>
+Q. What happens if you have *multiple* cats? Will this still work?<br>
+A. Yes. The Tensorflow library doesn't differentiate between different cats.  A meow is a meow as far as its concerned. Ditto dogs and barks.<br>
+<br><br>
+Q. Outside where my cat will be is pretty noisy. Will Tensorflow be able to discern the meow under those conditions?<br>
+A. We have a loud air conditioner and Tensorflow can still pick up the meow sound.  So its likely you can still make it work. YMMV!<br>
 <br><br>
