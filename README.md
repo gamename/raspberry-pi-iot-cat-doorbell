@@ -3,15 +3,15 @@
 # Table of Contents
 * [Overview](#Overview)
 * [Technical Description](#Technical-Description)
-* [High Level Design](#High-Level-Design)
+* [High Level Design<br>](#High-Level-Design<br>)
 * [Pictures](#Pictures)
 * [Prerequisites](#Prerequisites)
 * [Construction](#Construction)
-* [STEP 1: Raspberry Pi (RPi) Initial Configuration](#STEP-1:-Raspberry-Pi-(RPi)-Initial-Configuration)
+* [STEP 1: Raspberry Pi Initial Configuration](#STEP-1:-Raspberry-Pi-Initial-Configuration)
 * [STEP 2: AWS Configuration](#STEP-2:-AWS-Configuration)
 * [STEP 3: Test IoT Functionality](#STEP-3:-Test-IoT-Functionality)
 * [STEP 4: Assembly](#STEP-4:-Assembly)
-* [Parts List](#Parts-List)
+* [Parts List <br>](#Parts-List-<br>)
 * [Hardware Notes](#Hardware-Notes)
 * [FAQ](#FAQ)
 
@@ -56,7 +56,7 @@ These are holes drilled into the box to allow sound to be heard by the microphon
 The doorbell in use
 
 <br><br>
-# Prerequisites<br>
+# Prerequisites
 
 1. An AWS (Amazon Web
    Services) [account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
@@ -67,7 +67,7 @@ The doorbell in use
 
 # Construction
 
-# STEP 1: Raspberry Pi (RPi) Initial Configuration
+# STEP 1: Raspberry Pi Initial Configuration
 
 1. Load the operating system. See the procedure [here](https://youtu.be/u8bbp79haN4)<br>
    NOTE: Install the new *64-bit* version of the operating system.<br>
