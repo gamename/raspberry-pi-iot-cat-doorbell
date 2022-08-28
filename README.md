@@ -1,10 +1,10 @@
   - [Overview](#overview)
   - [Technical Description](#technical-description)
-  - [High Level Design<br>](#high-level-design<br>)
+  - [High Level Design](#high-level-design)
   - [Pictures](#pictures)
   - [Prerequisites](#prerequisites)
   - [Construction](#construction)
-  - [Parts List <br>](#parts-list-<br>)
+  - [Parts List](#parts-list)
   - [Hardware Notes](#hardware-notes)
   - [FAQ](#faq)
 
@@ -25,9 +25,9 @@ an AWS Lambda function for formatting. The Lambda function then forwards the mes
 topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
-# High Level Design<br>
-
-![](.README_images/diagram.png)
+# High Level Design
+<br>
+[](.README_images/diagram.png)
 <br><br>
 
 # Pictures
@@ -59,7 +59,7 @@ The doorbell in use
 
 # Construction
 
-# STEP 1: Raspberry Pi Initial Configuration
+## STEP 1: Raspberry Pi Initial Configuration
 
 1. Load the operating system. See the procedure [here](https://youtu.be/u8bbp79haN4)<br>
    NOTE: Install the new *64-bit* version of the operating system.<br>
@@ -106,7 +106,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 2: AWS Configuration
+## STEP 2: AWS Configuration
 ### NOTES:<br>- This cookbook assumes AWS region `us-east-1`<br>- Somtimes 'cat' is spelled 'kat' below. Ignore it. Always assume 'cat'. I had to do that to keep from conflicting with existing definitions.
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
@@ -217,7 +217,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 3: Test IoT Functionality
+## STEP 3: Test IoT Functionality
 1. Go to your [IoT settings](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/settings) on AWS. 
 2. Copy the "Endpoint" value:<br>
 ![](.README_images/iot-endpoint-value.png)<br>
@@ -228,7 +228,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 4: Assembly
+## STEP 4: Assembly
 1. Update the `raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbell.sh` file like you did in STEP 3 (above).<br>
 2. Now we will make sure the doorbell is active at boot time.  To do that, update the Raspberry Pi file `/etc/rc.local` with this change:<br> 
 ```bash
@@ -265,7 +265,7 @@ exit 0
 7. Test the whole thing by playing [this video](https://youtu.be/uLB1ZeRgl_k) while holding your phone near the microphone.
 <br><br>
 
-# Parts List <br>
+# Parts List
 
 1. [Raspberry Pi 4](https://a.co/d/iTeahRb)
 2. [Micro SD Card](https://a.co/d/gPUG9wK)
