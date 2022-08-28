@@ -27,8 +27,7 @@ topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
 # High Level Design
-<br>
-[](.README_images/diagram.png)
+![](.README_images/diagram.png)<br>
 <br><br>
 
 # Pictures
