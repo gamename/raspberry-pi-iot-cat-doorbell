@@ -1,26 +1,26 @@
 # raspberry-pi-iot-cat-doorbell
 
-# Table of Contents
-* [Overview](#Overview)
-* [Technical Description](#Technical-Description)
-* [High Level Design<br>](#High-Level-Design<br>)
-* [Pictures](#Pictures)
-* [Prerequisites](#Prerequisites)
-* [Construction](#Construction)
-* [STEP 1: Raspberry Pi Initial Configuration](#STEP-1:-Raspberry-Pi-Initial-Configuration)
-* [STEP 2: AWS Configuration](#STEP-2:-AWS-Configuration)
-* [STEP 3: Test IoT Functionality](#STEP-3:-Test-IoT-Functionality)
-* [STEP 4: Assembly](#STEP-4:-Assembly)
-* [Parts List <br>](#Parts-List-<br>)
-* [Hardware Notes](#Hardware-Notes)
-* [FAQ](#FAQ)
-
 
 # Overview
 
 This is a setup to alert me when our cat is meowing at the door and wants to be let in. If the door is closed, and the
 cat goes 'meow' while outside, then I get text message on my cell phone.
 <br><br>
+
+# Table of Contents
+  - [Technical Description](#technical-description)
+  - [High Level Design<br>](#high-level-design<br>)
+  - [Pictures](#pictures)
+  - [Prerequisites](#prerequisites)
+  - [Construction](#construction)
+  - [STEP 1](#-raspberry-pi-initial-configuration)
+  - [STEP 2](#-aws-configuration)
+  - [STEP 3](#-test-iot-functionality)
+  - [STEP 4](#-assembly)
+  - [Parts List <br>](#parts-list-<br>)
+  - [Hardware Notes](#hardware-notes)
+  - [FAQ](#faq)
+
 
 # Technical Description
 
