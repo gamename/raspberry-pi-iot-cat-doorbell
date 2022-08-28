@@ -1,5 +1,12 @@
-# raspberry-pi-iot-cat-doorbell
-
+  - [Overview](#overview)
+  - [Technical Description](#technical-description)
+  - [High Level Design<br>](#high-level-design<br>)
+  - [Pictures](#pictures)
+  - [Prerequisites](#prerequisites)
+  - [Construction](#construction)
+  - [Parts List <br>](#parts-list-<br>)
+  - [Hardware Notes](#hardware-notes)
+  - [FAQ](#faq)
 
 # Overview
 
@@ -7,27 +14,12 @@ This is a setup to alert me when our cat is meowing at the door and wants to be 
 cat goes 'meow' while outside, then I get text message on my cell phone.
 <br><br>
 
-# Table of Contents
-  - [Technical Description](#technical-description)
-  - [High Level Design<br>](#high-level-design<br>)
-  - [Pictures](#pictures)
-  - [Prerequisites](#prerequisites)
-  - [Construction](#construction)
-  - [STEP 1](#-raspberry-pi-initial-configuration)
-  - [STEP 2](#-aws-configuration)
-  - [STEP 3](#-test-iot-functionality)
-  - [STEP 4](#-assembly)
-  - [Parts List <br>](#parts-list-<br>)
-  - [Hardware Notes](#hardware-notes)
-  - [FAQ](#faq)
-
-
 # Technical Description
 
 This is an Amazon Web Services (AWS) Internet of Things (IoT) application. A single Raspberry Pi is defined as a "thing" 
 on AWS in the IoT Core service. AWS software is loaded on the Raspberry Pi which has an attached microphone. Onboard the 
 Raspberry Pi is a small Machine Learning (ML) application called Tensorflow Lite. Along with Tensorflow, there is a 
-small database of sounds it is able to identify. WHen the correct sound (in this case a cat meowing) is detected, 
+small database of sounds it is able to identify. When the correct sound (in this case a cat meowing) is detected, 
 the Tensorflow recognizes it and forwards a message to AWS. AWS IoT intercepts the message and sends the message to 
 an AWS Lambda function for formatting. The Lambda function then forwards the message to an SNS (Simple Notification Service) 
 topic which then sends it as an SMS text message to my cell phone.
