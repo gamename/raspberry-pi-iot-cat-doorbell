@@ -268,7 +268,7 @@ exit 0
 # Parts List
 
 1. [Raspberry Pi 4](https://a.co/d/iTeahRb)
-2. [Micro SD Card](https://a.co/d/gPUG9wK)
+2. [Micro SD Card](https://a.co/d/4fiEO77)
 3. [RPi Chassis](https://a.co/d/fNzIn9r)
 4. [Microphone](https://a.co/d/79ZNPXm)
 5. [RJ45 ethernet cable](https://a.co/d/4nUaynw) (to extend the USB connection)
