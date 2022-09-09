@@ -4,6 +4,7 @@ python3 "${HOME}/raspberry-pi-iot-cat-doorbell/raspberry_pi/test/doorbell-test.p
   --rootCA "${HOME}/root-CA.crt" \
   --cert "${HOME}/cat-doorbell.cert.pem" \
   --key "${HOME}/cat-doorbell.private.key" \
+  --clientId "doorbell-test" \
   --topic "<your-initials>/bot/cat-doorbell" \
   --message "MSG002 Cat at the door!" \
 

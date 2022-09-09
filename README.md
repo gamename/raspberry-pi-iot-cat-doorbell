@@ -1,6 +1,16 @@
-# raspberry-pi-iot-cat-doorbell
+# Table of Contents
+  - [Overview](#overview)
+  - [Technical Description](#technical-description)
+  - [High Level Design](#high-level-design)
+  - [Pictures](#pictures)
+  - [Prerequisites](#prerequisites)
+  - [Construction](#construction)
+  - [Parts List](#parts-list)
+  - [Hardware Notes](#hardware-notes)
+  - [FAQ](#faq)
 
-<br><br>
+# Overview
+
 This is a setup to alert me when our cat is meowing at the door and wants to be let in. If the door is closed, and the
 cat goes 'meow' while outside, then I get text message on my cell phone.
 <br><br>
@@ -10,15 +20,14 @@ cat goes 'meow' while outside, then I get text message on my cell phone.
 This is an Amazon Web Services (AWS) Internet of Things (IoT) application. A single Raspberry Pi is defined as a "thing" 
 on AWS in the IoT Core service. AWS software is loaded on the Raspberry Pi which has an attached microphone. Onboard the 
 Raspberry Pi is a small Machine Learning (ML) application called Tensorflow Lite. Along with Tensorflow, there is a 
-small database of sounds it is able to identify. WHen the correct sound (in this case a cat meowing) is detected, 
+small database of sounds it is able to identify. When the correct sound (in this case a cat meowing) is detected, 
 the Tensorflow recognizes it and forwards a message to AWS. AWS IoT intercepts the message and sends the message to 
 an AWS Lambda function for formatting. The Lambda function then forwards the message to an SNS (Simple Notification Service) 
 topic which then sends it as an SMS text message to my cell phone.
 <br><br>
 
-# High Level Design<br>
-
-![](.README_images/diagram.png)
+# High Level Design
+![](.README_images/diagram.png)<br>
 <br><br>
 
 # Pictures
@@ -39,7 +48,7 @@ These are holes drilled into the box to allow sound to be heard by the microphon
 The doorbell in use
 
 <br><br>
-# Prerequisites<br>
+# Prerequisites
 
 1. An AWS (Amazon Web
    Services) [account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
@@ -50,7 +59,7 @@ The doorbell in use
 
 # Construction
 
-# STEP 1: Raspberry Pi (RPi) Initial Configuration
+## STEP 1: Raspberry Pi Initial Configuration
 
 1. Load the operating system. See the procedure [here](https://youtu.be/u8bbp79haN4)<br>
    NOTE: Install the new *64-bit* version of the operating system.<br>
@@ -97,7 +106,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 2: AWS Configuration
+## STEP 2: AWS Configuration
 ### NOTES:<br>- This cookbook assumes AWS region `us-east-1`<br>- Somtimes 'cat' is spelled 'kat' below. Ignore it. Always assume 'cat'. I had to do that to keep from conflicting with existing definitions.
 
 1. Create the "thing" [definition](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/connectdevice) on
@@ -208,7 +217,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 3: Test IoT Functionality
+## STEP 3: Test IoT Functionality
 1. Go to your [IoT settings](https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/settings) on AWS. 
 2. Copy the "Endpoint" value:<br>
 ![](.README_images/iot-endpoint-value.png)<br>
@@ -219,7 +228,7 @@ The doorbell in use
 
 <br><br>
 
-# STEP 4: Assembly
+## STEP 4: Assembly
 1. Update the `raspberry-pi-iot-cat-doorbell/raspberry_pi/start-doorbell.sh` file like you did in STEP 3 (above).<br>
 2. Now we will make sure the doorbell is active at boot time.  To do that, update the Raspberry Pi file `/etc/rc.local` with this change:<br> 
 ```bash
@@ -256,10 +265,10 @@ exit 0
 7. Test the whole thing by playing [this video](https://youtu.be/uLB1ZeRgl_k) while holding your phone near the microphone.
 <br><br>
 
-# Parts List <br>
+# Parts List
 
 1. [Raspberry Pi 4](https://a.co/d/iTeahRb)
-2. [Micro SD Card](https://a.co/d/gPUG9wK)
+2. [Micro SD Card](https://a.co/d/4fiEO77)
 3. [RPi Chassis](https://a.co/d/fNzIn9r)
 4. [Microphone](https://a.co/d/79ZNPXm)
 5. [RJ45 ethernet cable](https://a.co/d/4nUaynw) (to extend the USB connection)
