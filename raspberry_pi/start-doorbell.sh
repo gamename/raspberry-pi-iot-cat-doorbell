@@ -5,5 +5,6 @@ nohup python3 "${HOME}/raspberry-pi-iot-cat-doorbell/raspberry_pi/doorbell.py" \
   --cert "${HOME}/cat-doorbell.cert.pem" \
   --key "${HOME}/cat-doorbell.private.key" \
   --topic "<your-initials>/bot/cat-doorbell" \
+  --clientId "doorbell" \
   --message "MSG002 Milo at the door!" \
   --model "${HOME}/raspberry-pi-iot-cat-doorbell/raspberry_pi/yamnet.tflite" > /tmp/doorbell.log 2>&1 &
