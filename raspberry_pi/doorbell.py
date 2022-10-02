@@ -61,6 +61,7 @@ def tensor_setup(args):
     flow_data['audio_record'] = audio_record
     flow_data['pause_time'] = pause_time
     flow_data['last_inference_time'] = last_inference_time
+    flow_data['interval_between_inference'] = interval_between_inference
     return flow_data
 
 
