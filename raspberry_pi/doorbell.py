@@ -1,7 +1,12 @@
+"""
+A combination of IOT and Tensorflow that implements a cat doorbell. When a 'meow' is detected,
+an IOT message is sent.
+"""
 import argparse
 import json
 import logging
 import time
+import sys
 
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 from tflite_support.task import audio, core, processor
@@ -9,8 +14,14 @@ from tflite_support.task import audio, core, processor
 AllowedActions = ['both', 'publish', 'subscribe']
 
 
-# Custom MQTT message callback
-def customCallback(client, userdata, message):
+def custom_callback(client, userdata, message):
+    """
+    Custom callback function to be called when a payload is sent from AWS
+    :param client: client to send payload
+    :param userdata: userdata to send
+    :param message: message to be sent
+    :return: Nothing
+    """
     print("Received a new message: ")
     print(message.payload)
     print("from topic: ")
@@ -18,24 +29,22 @@ def customCallback(client, userdata, message):
     print("--------------\n\n")
 
 
-def run(args) -> None:
+def tensor_setup(args):
     """
-    The main runner function which sets up both Tensorflow and IoT/MQTT clients. The `while` loop runs forever
-    waiting for a cat sound (a meow) to trigger the IoT scripts on AWS and thereby drive the SMS notifications.
+    Set up the Tensorflow server
 
-    :param args: The various arguments passed to the function from the command line
+    :param args: The command line arguments
+    :return: data structure containing the tensor data
     """
-    # Tensorflow setup
-    model = str(args.model)
-    max_results = int(args.maxResults)
-    score_threshold = float(args.scoreThreshold)
-    overlapping_factor = float(args.overlappingFactor)
-    num_threads = int(args.numThreads)
-    enable_edgetpu = bool(args.enableEdgeTPU)
-
-    base_options = core.BaseOptions(file_name=model, use_coral=enable_edgetpu, num_threads=num_threads)
-    classification_options = processor.ClassificationOptions(max_results=max_results, score_threshold=score_threshold)
-    options = audio.AudioClassifierOptions(base_options=base_options, classification_options=classification_options)
+    flow_data = {}
+    base_options = core.BaseOptions(file_name=str(args.model),
+                                    use_coral=bool(args.enableEdgeTPU),
+                                    num_threads=int(args.numThreads))
+    classification_options = processor.ClassificationOptions(max_results=int(args.maxResults),
+                                                             score_threshold=float(
+                                                                 args.scoreThreshold))
+    options = audio.AudioClassifierOptions(base_options=base_options,
+                                           classification_options=classification_options)
 
     classifier = audio.AudioClassifier.create_from_options(options)
 
@@ -43,67 +52,86 @@ def run(args) -> None:
     tensor_audio = classifier.create_input_tensor_audio()
 
     input_length_in_second = float(len(tensor_audio.buffer)) / tensor_audio.format.sample_rate
-    interval_between_inference = input_length_in_second * (1 - overlapping_factor)
+    interval_between_inference = input_length_in_second * (1 - float(args.overlappingFactor))
     pause_time = interval_between_inference * 0.1
     last_inference_time = time.time()
 
-    audio_record.start_recording()
+    # audio_record.start_recording()
+    flow_data['classifier'] = classifier
+    flow_data['tensor_audio'] = tensor_audio
+    flow_data['audio_record'] = audio_record
+    flow_data['pause_time'] = pause_time
+    flow_data['last_inference_time'] = last_inference_time
+    return flow_data
 
-    # IOT Setup
+
+def iot_setup(args):
+    """
+    Sets up the AWS IOT connection
+    """
     host = args.host
-    rootCAPath = args.rootCAPath
-    certificatePath = args.certificatePath
-    privateKeyPath = args.privateKeyPath
+    root_ca_path = args.root_ca_path
+    certificate_path = args.certificate_path
+    private_key_path = args.private_key_path
     port = args.port
-    useWebsocket = args.useWebsocket
-    clientId = args.clientId
-    topic = args.topic
+    use_web_socket = args.use_web_socket
+    client_id = args.client_id
 
     # Port defaults
-    if args.useWebsocket and not args.port:  # When no port override for WebSocket, default to 443
+    # When no port override for WebSocket, default to 443
+    if args.use_web_socket and not args.port:
         port = 443
-    if not args.useWebsocket and not args.port:  # When no port override for non-WebSocket, default to 8883
+
+    # When no port override for non-WebSocket, default to 8883
+    if not args.use_web_socket and not args.port:
         port = 8883
 
     # Configure logging
     logger = logging.getLogger("AWSIoTPythonSDK.core")
     logger.setLevel(logging.CRITICAL)
-    streamHandler = logging.StreamHandler()
+    stream_handler = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    streamHandler.setFormatter(formatter)
-    logger.addHandler(streamHandler)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
 
-    # Init AWSIoTMQTTClient
-    iotClient = None
-    if useWebsocket:
+    if use_web_socket:
         print("websocket!")
-        iotClient = AWSIoTMQTTClient(clientId, useWebsocket=True)
-        iotClient.configureEndpoint(host, port)
-        iotClient.configureCredentials(rootCAPath)
+        iot_client = AWSIoTMQTTClient(client_id, use_web_socket=True)
+        iot_client.configureEndpoint(host, port)
+        iot_client.configureCredentials(root_ca_path)
     else:
         print("NON-websocket!")
-        iotClient = AWSIoTMQTTClient(clientId)
-        iotClient.configureEndpoint(host, port)
-        iotClient.configureCredentials(rootCAPath, privateKeyPath, certificatePath)
+        iot_client = AWSIoTMQTTClient(client_id)
+        iot_client.configureEndpoint(host, port)
+        iot_client.configureCredentials(root_ca_path, private_key_path, certificate_path)
 
     # AWSIoTMQTTClient connection configuration
-    iotClient.configureAutoReconnectBackoffTime(1, 32, 20)
-    iotClient.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
-    iotClient.configureDrainingFrequency(2)  # Draining: 2 Hz
-    iotClient.configureConnectDisconnectTimeout(10)  # 10 sec
-    iotClient.configureMQTTOperationTimeout(5)  # 5 sec
+    iot_client.configureAutoReconnectBackoffTime(1, 32, 20)
+    iot_client.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
+    iot_client.configureDrainingFrequency(2)  # Draining: 2 Hz
+    iot_client.configureConnectDisconnectTimeout(10)  # 10 sec
+    iot_client.configureMQTTOperationTimeout(5)  # 5 sec
 
+    return iot_client
+
+
+def connect_client(iot_client):
+    """
+    Connects to AWS IoTMQTTClient
+    :param iot_client: The client to connect to Amazon
+    :return: Nothing
+    """
     retry_flag = True
     retry_count = 0
 
     while retry_flag and retry_count < 5:
         try:
             # Connect and subscribe to AWS IoT
-            iotClient.connect()
+            iot_client.connect()
             print("Connection successful!")
             retry_flag = False
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
             print("Connection unsuccessful! Retry after 5 sec")
             retry_count = retry_count + 1
             time.sleep(5)
@@ -111,37 +139,71 @@ def run(args) -> None:
     if retry_count == 5:
         print("Connection retries exceeded!")
         raise Exception("Could not connect to host!")
-
-    if args.mode == 'both' or args.mode == 'subscribe':
-        iotClient.subscribe(topic, 1, customCallback)
     time.sleep(2)
 
-    message = dict(message=args.message)
-    messageJson = json.dumps(message)
+
+def message_handler(client, topic, msg, tensor):
+    """
+    Sends a message to the MQTT topic
+    :param client: The MQTT client
+    :param topic: The topic to send the message to
+    :param msg: The message to send
+    :param tensor: The tensor to send
+    :return: Nothing
+    """
+    tensor_audio = tensor['tensor_audio']
+    audio_record = tensor['audio_record']
+    classifier = tensor['classifier']
+    last_inference_time = tensor['last_inference_time']
+    interval_between_inference = tensor['interval_between_inference']
 
     while True:
         now = time.time()
         diff = now - last_inference_time
         if diff < interval_between_inference:
-            time.sleep(pause_time)
+            time.sleep(tensor['pause_time'])
             continue
         last_inference_time = now
 
         # Load the input audio and run classify.
         tensor_audio.load_from_audio_record(audio_record)
         result = classifier.classify(tensor_audio)
-
         classification = result.classifications[0]
         label_list = [category.class_name for category in classification.classes]
         noise = label_list[0]
-        # print(noise)
+
         if noise == 'Cat':
             print("Cat detected!")
-            iotClient.publish(topic, messageJson, 1)
+            client.publish(topic, msg, 1)
             time.sleep(120)
 
 
+def run(args) -> None:
+    """
+    The main runner function which sets up both Tensorflow and IoT/MQTT clients. The `while`
+    loop runs forever waiting for a cat sound (a meow) to trigger the IoT scripts on AWS and
+    thereby drive the SMS notifications.
+
+    :param args: The various arguments passed to the function from the command line
+    """
+
+    tensor_data = tensor_setup(args)
+    iot_client = iot_setup(args)
+    connect_client(iot_client)
+
+    if args.mode in ('both', 'subscribe'):
+        iot_client.subscribe(args.topic, 1, custom_callback)
+
+    message = dict(message=args.message)
+    message_json = json.dumps(message)
+
+    message_handler(iot_client, args.topic, tensor_data, message_json)
+
+
 def main():
+    """
+    The main function
+    """
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -155,7 +217,7 @@ def main():
                         required=False,
                         default=5)
     parser.add_argument('--overlappingFactor',
-                        help='Target overlapping between adjacent inferences. Value must be in (0, 1)',
+                        help='Target overlapping adjacent inferences. Value must be in (0, 1)',
                         required=False,
                         default=0.5)
     parser.add_argument('--scoreThreshold',
@@ -180,15 +242,15 @@ def main():
     parser.add_argument("--rootCA",
                         action="store",
                         required=True,
-                        dest="rootCAPath",
+                        dest="root_ca_path",
                         help="Root CA file path")
     parser.add_argument("--cert",
                         action="store",
-                        dest="certificatePath",
+                        dest="certificate_path",
                         help="Certificate file path")
     parser.add_argument("--key",
                         action="store",
-                        dest="privateKeyPath",
+                        dest="private_key_path",
                         help="Private key file path")
     parser.add_argument("--port",
                         action="store",
@@ -197,12 +259,12 @@ def main():
                         help="Port number override")
     parser.add_argument("--websocket",
                         action="store_true",
-                        dest="useWebsocket",
+                        dest="use_web_socket",
                         default=False,
                         help="Use MQTT over WebSocket")
-    parser.add_argument("--clientId",
+    parser.add_argument("--client_id",
                         action="store",
-                        dest="clientId",
+                        dest="client_id",
                         default="basicPubSub",
                         help="Targeted client id")
     parser.add_argument("--topic",
@@ -214,34 +276,34 @@ def main():
                         action="store",
                         dest="mode",
                         default="both",
-                        help="Operation modes: %s" % str(AllowedActions))
+                        help="Operation modes: " + str(AllowedActions))
     parser.add_argument("--message",
                         action="store",
                         dest="message",
-                        default="MSG002 Milo at the door!",
                         help="Message to publish")
 
     args = parser.parse_args()
 
     if (args.overlappingFactor <= 0) or (args.overlappingFactor >= 1.0):
         parser.error('Overlapping factor must be between 0 and 1.')
-        exit(2)
+        sys.exit(2)
 
     if (args.scoreThreshold < 0) or (args.scoreThreshold > 1.0):
         parser.error('Score threshold must be between (inclusive) 0 and 1.')
-        exit(2)
+        sys.exit(2)
 
     if args.mode not in AllowedActions:
-        parser.error("Unknown --mode option %s. Must be one of %s" % (args.mode, str(AllowedActions)))
-        exit(2)
+        parser.error("Unknown --mode option " + args.mode +
+                     ". Must be one of " + str(AllowedActions))
+        sys.exit(2)
 
-    if args.useWebsocket and args.certificatePath and args.privateKeyPath:
-        parser.error("X.509 cert authentication and WebSocket are mutual exclusive. Please pick one.")
-        exit(2)
+    if args.use_web_socket and args.certificate_path and args.private_key_path:
+        parser.error("X.509 cert authentication and WebSocket are mutually exclusive.")
+        sys.exit(2)
 
-    if not args.useWebsocket and (not args.certificatePath or not args.privateKeyPath):
+    if not args.use_web_socket and (not args.certificate_path or not args.private_key_path):
         parser.error("Missing credentials for authentication.")
-        exit(2)
+        sys.exit(2)
 
     run(args)
 
