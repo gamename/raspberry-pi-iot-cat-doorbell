@@ -147,19 +147,21 @@ def message_handler(client, topic, msg, tensor, recorder):
     :param client: The MQTT client
     :param topic: The topic to send the message to
     :param msg: The message to send
-    :param tensor: The tensor to send
+    :param tensor: The tensor data structure
+    :param recorder: The recorder to record sounds
     :return: Nothing
     """
     tensor_audio = tensor['tensor_audio']
     classifier = tensor['classifier']
     last_inference_time = tensor['last_inference_time']
     interval_between_inference = tensor['interval_between_inference']
+    pause_time = tensor['pause_time']
 
     while True:
         now = time.time()
         diff = now - last_inference_time
         if diff < interval_between_inference:
-            time.sleep(tensor['pause_time'])
+            time.sleep(pause_time)
             continue
         last_inference_time = now
 
