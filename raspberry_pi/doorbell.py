@@ -239,7 +239,7 @@ def main():
                         required=True,
                         dest="host",
                         help="Your AWS IoT custom endpoint")
-    parser.add_argument("--rootCA",
+    parser.add_argument("--root_ca",
                         action="store",
                         required=True,
                         dest="root_ca_path",
