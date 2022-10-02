@@ -56,7 +56,7 @@ def tensor_setup(args):
     pause_time = interval_between_inference * 0.1
     last_inference_time = time.time()
 
-    # audio_record.start_recording()
+    # audio_record.start_recording() # FIXME
     flow_data['classifier'] = classifier
     flow_data['tensor_audio'] = tensor_audio
     flow_data['audio_record'] = audio_record
@@ -197,7 +197,7 @@ def run(args) -> None:
     message = dict(message=args.message)
     message_json = json.dumps(message)
 
-    message_handler(iot_client, args.topic, tensor_data, message_json)
+    message_handler(iot_client, args.topic, message_json, tensor_data)
 
 
 def main():
