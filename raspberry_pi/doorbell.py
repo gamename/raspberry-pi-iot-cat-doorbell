@@ -265,12 +265,10 @@ def main():
     parser.add_argument("--client_id",
                         action="store",
                         dest="client_id",
-                        default="basicPubSub",
                         help="Targeted client id")
     parser.add_argument("--topic",
                         action="store",
                         dest="topic",
-                        default="tns/bot/cat-doorbell",
                         help="Targeted topic")
     parser.add_argument("--mode",
                         action="store",
@@ -278,6 +276,7 @@ def main():
                         default="both",
                         help="Operation modes: " + str(AllowedActions))
     parser.add_argument("--message",
+                        type=str,
                         action="store",
                         dest="message",
                         help="Message to publish")
