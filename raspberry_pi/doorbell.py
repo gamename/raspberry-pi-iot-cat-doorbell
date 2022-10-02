@@ -56,7 +56,6 @@ def tensor_setup(args):
     pause_time = interval_between_inference * 0.1
     last_inference_time = time.time()
 
-    # audio_record.start_recording() # FIXME
     flow_data['classifier'] = classifier
     flow_data['tensor_audio'] = tensor_audio
     flow_data['audio_record'] = audio_record
@@ -142,7 +141,7 @@ def connect_client(iot_client):
     time.sleep(2)
 
 
-def message_handler(client, topic, msg, tensor):
+def message_handler(client, topic, msg, tensor, recorder):
     """
     Sends a message to the MQTT topic
     :param client: The MQTT client
@@ -152,7 +151,6 @@ def message_handler(client, topic, msg, tensor):
     :return: Nothing
     """
     tensor_audio = tensor['tensor_audio']
-    audio_record = tensor['audio_record']
     classifier = tensor['classifier']
     last_inference_time = tensor['last_inference_time']
     interval_between_inference = tensor['interval_between_inference']
@@ -166,7 +164,7 @@ def message_handler(client, topic, msg, tensor):
         last_inference_time = now
 
         # Load the input audio and run classify.
-        tensor_audio.load_from_audio_record(audio_record)
+        tensor_audio.load_from_audio_record(recorder)
         result = classifier.classify(tensor_audio)
         classification = result.classifications[0]
         label_list = [category.class_name for category in classification.classes]
@@ -188,6 +186,9 @@ def run(args) -> None:
     """
 
     tensor_data = tensor_setup(args)
+    audio_record = tensor_data['audio_record']
+    audio_record.start_recording()
+
     iot_client = iot_setup(args)
     connect_client(iot_client)
 
@@ -197,7 +198,7 @@ def run(args) -> None:
     message = dict(message=args.message)
     message_json = json.dumps(message)
 
-    message_handler(iot_client, args.topic, message_json, tensor_data)
+    message_handler(iot_client, args.topic, message_json, tensor_data, audio_record)
 
 
 def main():
