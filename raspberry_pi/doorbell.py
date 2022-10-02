@@ -179,7 +179,7 @@ def message_handler(client, topic, msg, tensor, recorder):
             time.sleep(120)
 
 
-def run(args) -> None:
+def run(args):
     """
     The main runner function which sets up both Tensorflow and IoT/MQTT clients. The `while`
     loop runs forever waiting for a cat sound (a meow) to trigger the IoT scripts on AWS and
